@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble};
+enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Rainbow_CycleAll, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -30,6 +30,8 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void colorWipeUpdate();
     void rainbowCycle(uint8_t interval, direction dir = FORWARD);
     void rainbowCycleUpdate();
+    void rainbowCycleAll(uint8_t interval, direction dir = FORWARD);
+    void rainbowCycleAllUpdate();
     void theaterChase(uint32_t color1, bool rainbow = 0, uint32_t color2=Color(0,0,0), uint8_t interval=50);
     void theaterChaseUpdate();
     void fireSpiral(uint8_t numcols, uint8_t cooling = 50, uint8_t sparking = 120, uint8_t interval = 15); //Only possible on Neopixel strip wrapped around something

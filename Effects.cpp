@@ -40,6 +40,9 @@ void Effects::Update(){
       case Rainbow_Cycle:
         rainbowCycleUpdate();
         break;
+      case Rainbow_CycleAll:
+        rainbowCycleAllUpdate();
+        break;
       case Theater_Chase:
         theaterChaseUpdate();
         break;
@@ -249,6 +252,26 @@ void Effects::rainbowCycleUpdate(){
   for (int i = 0; i < numPixels(); i++)  {
     setPixelColor(i, Wheel(((i * 256 / numPixels()) + Index) & 255));
   }
+  show();
+  Increment(1);
+}
+
+//******Rainbow Cycle All (each pixel in same color)
+
+void Effects::rainbowCycleAll(uint8_t interval, direction dir){
+  ActiveEffect = Rainbow_CycleAll;
+  Interval = interval;
+  TotalSteps = 255;
+  Index = 0;
+  Direction = dir;
+}
+
+void Effects::rainbowCycleAllUpdate(){
+
+  Color1=Wheel(Index);
+
+  fill(Color1,0,(numPixels()-1));
+    
   show();
   Increment(1);
 }
