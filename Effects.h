@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Rainbow_CycleAll, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble};
+enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Rainbow_CycleAll, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble, Heart_Beat};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -42,6 +42,8 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void rainSpiralUpdate();
     void rollingMarble(uint8_t interval, direction dir = FORWARD);
     void rollingMarbleUpdate();
+    void heartBeat(uint32_t color1, uint8_t interval = 2, direction dir = FORWARD);
+    void heartBeatUpdate();
 
     //helper functions
     uint8_t Red(uint32_t color);
@@ -54,10 +56,13 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
   private:
     effect ActiveEffect;       // which pattern is running
     direction Direction;       // direction to run the pattern
+    direction Direction_Last;  // to notice changing directions
     
     //Definition of private variables:
     unsigned long Interval;         // milliseconds between updates
     unsigned long Interval_Initial; //Storage for initial interval
+    unsigned long Interval_Store;   //Storage for any interval
+
     unsigned long lastUpdate;       // last update of position
     unsigned long ReturnDelay;      //Delay before direction reversal
     uint16_t Index;                 // current step within the pattern
@@ -101,9 +106,12 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     float F_G, F_F, F_Air;          //forces: gravity, friction, air resistance
     float a;                        //acceleration
 
+    int CounterBeat;                //Heartbeat counter
+    int waitStart;                  //Time for starting waiting interval
+
     //Definition of privat helper functions:
     void Increment(uint8_t IncrementValue);
-    void IncrementChangingDirections();
+    void IncrementChangingDirections(uint8_t IncrementValue);
 
     void marblePhysicsUpdate();
 };

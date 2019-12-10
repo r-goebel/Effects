@@ -58,6 +58,9 @@ void Effects::Update(){
       case  Rolling_Marble:
         rollingMarbleUpdate();
         break;
+      case Heart_Beat:
+        heartBeatUpdate();
+        break;
     }
   } else {
     delay(1);
@@ -79,17 +82,17 @@ void Effects::Increment(uint8_t IncrementValue){
   }
 }
 
-void Effects::IncrementChangingDirections(){
+void Effects::IncrementChangingDirections(uint8_t IncrementValue){
   Interval = Interval_Initial;
   if (Direction == FORWARD){
-    Index++;
+    Index = Index + IncrementValue;
     if (Index > TotalSteps){
       Direction = REVERSE;
       Interval = ReturnDelay;
     }
   }
   else { // Direction == REVERSE
-    --Index;
+    Index = Index - IncrementValue;
     if (Index <= 0){
       Direction = FORWARD;
       Interval = ReturnDelay;
@@ -125,7 +128,7 @@ void Effects::FadeInOutUpdate(){
   //  Direction = FORWARD;
   //}
   show();
-  IncrementChangingDirections(); 
+  IncrementChangingDirections(1); 
 }
 
 //******Cylon
@@ -152,7 +155,7 @@ void Effects::CylonUpdate(){
     setPixelColor(Index+SizeEffect+1, Red(Color1)/10, Green(Color1)/10, Blue(Color1)/10);
       
     show();
-    IncrementChangingDirections();
+    IncrementChangingDirections(1);
 }
 
 //******Twinkle
@@ -486,6 +489,57 @@ void Effects::rollingMarbleUpdate(){
   show();
   
 }
+
+//******Heart Beat
+void Effects::heartBeat(uint32_t color1, uint8_t interval, direction dir) {
+  ActiveEffect = Heart_Beat;
+  Index = 0;
+  Interval = interval;
+  ReturnDelay = interval;
+  Interval_Store = interval;
+  TotalSteps = 256;
+  Direction = dir;
+  Direction_Last = dir;
+  Color1 = color1; 
+  CounterBeat = 0;
+}
+
+void Effects::heartBeatUpdate(){
+  Serial.println(CounterBeat);
+
+  //perform fading
+    r = (Index/256.0) * Red(Color2);
+    g = (Index/256.0) * Green(Color2);
+    b = (Index/256.0) * Blue(Color2);
+
+    fill(Color(r,g,b),0,(numPixels()-1));
+    show();
+    IncrementChangingDirections(5); //Changes Directions after number of total steps reached
+
+    if (Direction != Direction_Last){
+      CounterBeat++;
+      Direction_Last = Direction;
+    }
+
+  if (CounterBeat < 3){
+    //perform with short interval:Fade in to Color1 fast, Fade out to black fast, Fade in to Color fast
+    Interval = Interval_Store;
+    Color2 = Color1;
+
+  } else if (CounterBeat == 3){
+    //perform with longer interval: Fade out to black slower
+    Interval = Interval_Store*2;
+
+  } else if (CounterBeat == 4 || CounterBeat == 5){ //Perform twice to correct direction
+    //wait interval
+    Interval = Interval_Store*5;
+    Color2 = Color(0,0,0); 
+  } else {
+    //reset CounterBeat
+      CounterBeat = 0;
+  }
+}
+
 
 /******************  Helper functions  ******************/
 uint32_t Effects::Wheel(byte WheelPos){
