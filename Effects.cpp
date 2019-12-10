@@ -505,7 +505,6 @@ void Effects::heartBeat(uint32_t color1, uint8_t interval, direction dir) {
 }
 
 void Effects::heartBeatUpdate(){
-  Serial.println(CounterBeat);
 
   //perform fading
     r = (Index/256.0) * Red(Color2);
