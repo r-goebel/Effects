@@ -34,7 +34,7 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void rainbowCycleAllUpdate();
     void theaterChase(uint32_t color1, bool rainbow = 0, uint32_t color2=Color(0,0,0), uint8_t interval=50);
     void theaterChaseUpdate();
-    void fireSpiral(uint8_t numcols, uint8_t cooling = 50, uint8_t sparking = 120, uint8_t interval = 15); //Only possible on Neopixel strip wrapped around something
+    void fireSpiral(uint8_t numcols, bool cold=0, uint8_t cooling = 50, uint8_t sparking = 120, uint8_t interval = 15); //Only possible on Neopixel strip wrapped around something
     void fireSpiralUpdate();
     void meteorRainSpiral(uint32_t color1, uint8_t numcols, uint8_t meteorSize = 4, uint8_t TrailDecay = 64, bool RandomDecay = 1, uint8_t interval = 30); //Only possible on Neopixel strip wrapped around something
     void meteorRainSpiralUpdate();
@@ -51,6 +51,7 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     uint8_t Blue(uint32_t color);
     uint32_t Wheel(byte WheelPos);
     void setPixelHeatColor(int Pixel, byte temperature);
+	void setPixelColdColor(int Pixel, byte temperature);
     void fadeToBlack(int Pixel, uint8_t fadeValue);
 
   private:
@@ -83,6 +84,7 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     uint8_t *Heat;                  //Heat of each pixel
     int cooldown;                   //cooldown factor
     byte temperature;               //temperature of a pixel
+	bool Cold;						//for selection of ice fire
 
     uint8_t TrailDecay;             //Fading value for Decay
     bool RandomDecay;               //1 if random Decay is selected

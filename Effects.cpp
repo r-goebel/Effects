@@ -317,13 +317,15 @@ void Effects::theaterChaseUpdate(){
 // SPARKING: What chance (out of 255) is there that a new spark will be lit?
 //           Higher chance = more roaring fire.  Lower chance = more flickery fire.
 //           Default 120, suggested range 50-200.
+//COLD. if 1 ice fire is selected
 
-void Effects::fireSpiral(uint8_t numcols, uint8_t cooling, uint8_t sparking, uint8_t interval){
+void Effects::fireSpiral(uint8_t numcols, bool cold, uint8_t cooling, uint8_t sparking, uint8_t interval){
   ActiveEffect = Fire_Spiral;
   Interval = interval;
   Cooling = cooling;
   Sparking = sparking;
   NumCols = numcols;
+  Cold = cold;
 }
 
 void Effects::fireSpiralUpdate(){
@@ -357,7 +359,11 @@ void Effects::fireSpiralUpdate(){
 
   // Step 4.  Convert heat to LED colors
   for( int i = 0; i <=numPixels(); i++) {
-    setPixelHeatColor(i, Heat[i] );
+	  if (Cold){
+		setPixelColdColor(i,Heat[i]);
+	  } else {
+		setPixelHeatColor(i, Heat[i] );
+	  }
   }
 
   show();
@@ -591,6 +597,24 @@ void Effects::setPixelHeatColor (int Pixel, byte temperature) {
   }
 }
 
+//Mapping cold to color
+void Effects::setPixelColdColor (int Pixel, byte temperature) {
+  // Scale 'heat' down from 0-255 to 0-191
+  byte t192 = round((temperature/255.0)*191);
+ 
+  // calculate ramp up from
+  byte heatramp = t192 & 0x3F; // 0..63
+  heatramp <<= 2; // scale up to 0..252
+ 
+  // figure out which third of the spectrum we're in:
+  if( t192 > 0x80) {                     // coolest --> white
+    setPixelColor(Pixel, heatramp, 255, 255);
+  } else if( t192 > 0x40 ) {             // middle 
+    setPixelColor(Pixel, 0, heatramp, 255);
+  } else {                               // warmest --> blue
+    setPixelColor(Pixel, 0, 0, heatramp);
+  }
+}
 
 void Effects::fadeToBlack(int Pixel, uint8_t fadeValue) {
 
