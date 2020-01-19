@@ -22,7 +22,9 @@ void Effects::Update(){
     lastUpdate = millis();
     switch (ActiveEffect)
     {
-      case Fade_InOut:
+      case No_Effect:
+		break;
+	  case Fade_InOut:
         FadeInOutUpdate();
         break;
       case Cylon_Scanner:
@@ -102,6 +104,11 @@ void Effects::IncrementChangingDirections(uint8_t IncrementValue){
 
 
 /******************  Effects  ******************/
+
+//******No Effect
+void Effects::NoEffect() {
+	ActiveEffect = No_Effect;
+}
 
 //******Fade
 
