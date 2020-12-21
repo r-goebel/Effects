@@ -63,6 +63,9 @@ void Effects::Update(){
       case Heart_Beat:
         heartBeatUpdate();
         break;
+	  case Alarm_:
+		alarmUpdate();
+		break;
     }
   } else {
     delay(1);
@@ -550,6 +553,26 @@ void Effects::heartBeatUpdate(){
     //reset CounterBeat
       CounterBeat = 0;
   }
+}
+
+//******Alarm
+void Effects::alarm(uint32_t color1, uint8_t interval) {
+  ActiveEffect = Alarm_;
+  Index = 0;
+  Interval = interval;
+  Color1 = color1; 
+}
+
+void Effects::alarmUpdate(){
+
+  if (Index == 0){
+	  fill(Color1,0,(numPixels()-1));
+	  Index=1;
+   } else if (Index==1) {
+	clear();
+	Index=0;
+  }
+  show();
 }
 
 

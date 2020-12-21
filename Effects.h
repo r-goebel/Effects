@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {No_Effect, Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Rainbow_CycleAll, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble, Heart_Beat};
+enum effect {No_Effect, Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Rainbow_CycleAll, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble, Heart_Beat, Alarm_};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -45,6 +45,8 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void rollingMarbleUpdate();
     void heartBeat(uint32_t color1, uint8_t interval = 2, direction dir = FORWARD);
     void heartBeatUpdate();
+	void alarm(uint32_t color1, uint8_t interval = 250) ;
+	void alarmUpdate();
 
     //helper functions
     uint8_t Red(uint32_t color);
